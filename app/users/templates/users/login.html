@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Сторінка входу{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <section class="resume-section">
+            <h2>Вхід в систему</h2>
+            <p>Будь ласка, введіть ваші дані для входу.</p>
+
+            <form method="POST" action="{{ url_for('users.login') }}">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Ім'я користувача</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Увійти</button>
+
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}
