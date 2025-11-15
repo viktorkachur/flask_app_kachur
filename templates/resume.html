@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-md-4 text-center">
+        <img src="{{ url_for('static', filename='images/my_photo.jpg') }}"
+             alt="Моє фото"
+             class="img-fluid rounded-circle mb-3"
+             style="max-width: 200px;">
+        </div>
+    <div class="col-md-8">
+
+        <section class="resume-section" id="about">
+            <h2>Про мене</h2>
+            <p>Привіт! Я студент, який прагне стати кваліфікованим розробником. Люблю вивчати нові технології та створювати корисні додатки. Цей сайт — частина мого навчального процесу.</p>
+        </section>
+
+        <section class="resume-section" id="education">
+            <h2>Освіта</h2>
+            <p><strong>Прикарпатський національний університет ім. Василя Стефаника</strong><br>
+            Спеціальність: "Інженерія програмного забезпечення", 2023 - 2027 (очікувано)</p>
+        </section>
+
+        <section class="resume-section" id="skills">
+            <h2>Ключові навички</h2>
+            <ul>
+                <li>Розуміння принципів ООП</li>
+                <li>Базові знання SQL та баз даних</li>
+                <li>Вміння працювати з Git та GitHub</li>
+                <li>Розв'язання алгоритмічних задач</li>
+            </ul>
+        </section>
+
+        <section class="resume-section" id="tech">
+            <h2>Технології, які вивчаю</h2>
+            <p>
+                <span class="badge bg-primary">Python</span>
+                <span class="badge bg-secondary">Flask</span>
+                <span class="badge bg-success">HTML5</span>
+                <span class="badge bg-danger">CSS3</span>
+                <span class="badge bg-warning text-dark">JavaScript</span>
+                <span class="badge bg-info">Bootstrap</span>
+            </p>
+        </section>
+
+    </div>
+</div>
+{% endblock %}

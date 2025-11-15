@@ -1,20 +1,17 @@
-# 1. Імпортуємо клас Flask з модуля flask [cite: 20]
-from flask import Flask
 
-# 2. Створюємо "екземпляр" нашої програми[cite: 22].
-# Ми назвали змінну 'web_app' замість 'app'
+from flask import Flask, render_template
+
 web_app = Flask(__name__)
 
-# 3. Це "декоратор", він каже: "Якщо хтось зайде на головну сторінку ('/'), [cite: 25]
-# запусти функцію, що написана одразу під ним".
-@web_app.route('/')
-def home_page(): # Ми назвали функцію 'home_page' замість 'main' [cite: 28]
-    # 4. Функція повертає цей текст, який побачить користувач [cite: 30]
-    return 'Вітаю на моєму першому веб-проекті!'
 
-# 5. Ця умова дозволяє запускати сервер командою "python app.py". [cite: 33]
-# Вона перевіряє, чи цей файл запустили напряму.
+@web_app.route('/')
+def home_page():
+
+    return render_template('resume.html', title="Моє Резюме")
+
+@web_app.route('/contacts')
+def contacts_page():
+
+    return render_template('contacts.html', title="Контакти")
 if __name__ == '__main__':
-    # 6. Запускаємо вбудований веб-сервер у режимі "налагодження" (debug=True)[cite: 35],
-    # щоб бачити помилки і щоб сервер сам перезавантажувався.
     web_app.run(debug=True)

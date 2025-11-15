@@ -1,0 +1,19 @@
+/* Унікальні стилі для нашого сайту */
+
+body {
+    background-color: #f4f4f4; /* Світлий фон для сторінки */
+}
+
+/* Робимо футер трохи іншим */
+footer {
+    background-color: #e9ecef !important; /* Світло-сірий фон для футера */
+}
+
+/* Стилі для секцій резюме */
+.resume-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
