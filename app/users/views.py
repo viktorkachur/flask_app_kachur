@@ -1,10 +1,12 @@
-
 from flask import (
     render_template, request, url_for, redirect,
     flash, session, make_response
 )
 from app.users import users_bp
+from app.forms import LoginForm  # Зверни увагу: тут НЕМАЄ ContactForm
 import datetime
+
+
 
 @users_bp.route("/hi/<string:name>")
 def greetings(name):
@@ -20,22 +22,6 @@ def admin():
     to_url = url_for("users.greetings", name="administrator", age=45)
     return redirect(to_url)
 
-@users_bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if 'username' in session:
-        flash('Ви вже увійшли в систему.', 'info')
-        return redirect(url_for('users.profile'))
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if username == 'user' and password == 'pass':
-            session['username'] = username
-            flash(f'Вхід успішний! Вітаємо, {username}!', 'success')
-            return redirect(url_for('users.profile'))
-        else:
-            flash('Неправильне ім\'я користувача або пароль. Спробуйте ще раз.', 'danger')
-            return redirect(url_for('users.login'))
-    return render_template('users/login.html')
 
 
 @users_bp.route('/profile')
@@ -43,9 +29,7 @@ def profile():
     if 'username' in session:
         username = session['username']
         all_cookies = request.cookies
-
         theme = request.cookies.get('theme', 'light')
-
         return render_template(
             'users/profile.html',
             username=username,
@@ -123,12 +107,34 @@ def delete_all_cookies():
 def set_theme(theme):
     if 'username' not in session:
         return redirect(url_for('users.login'))
-
-
     response = make_response(redirect(url_for('users.profile')))
-
-    # Встановлюємо кукі 'theme' на 30 днів
-    max_age = 60 * 60 * 24 * 30  # 30 днів у секундах
+    max_age = 60 * 60 * 24 * 30
     response.set_cookie('theme', theme, max_age=max_age)
-
     return response
+
+
+@users_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'username' in session:
+        flash('Ви вже увійшли в систему.', 'info')
+        return redirect(url_for('users.profile'))
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        remember = form.remember.data
+
+        if username == 'user' and password == 'pass':
+            session['username'] = username
+
+            remember_message = "з опцією 'Запам'ята...'" if remember else "без опції 'Запам'я...'"
+            flash(f'Вхід успішний! Вітаємо, {username} ({remember_message}).', 'success')
+
+            return redirect(url_for('users.profile'))
+        else:
+            flash('Неправильне ім\'я користувача або пароль.', 'danger')
+            return redirect(url_for('users.login'))
+
+    return render_template('users/login.html', form=form)

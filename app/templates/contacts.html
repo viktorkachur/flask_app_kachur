@@ -1,26 +1,27 @@
 {% extends 'base.html' %}
 
+{% from '_render_field.html' import render_field %}
+
+{% block title %}Контакти{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <section class="resume-section" id="contact-form">
+        <section class="resume-section">
             <h2>Зв'яжіться зі мною</h2>
-            <p>Ви можете залишити повідомлення, і я зв'яжуся з вами.</p>
+            <p>Заповніть форму нижче, щоб надіслати мені повідомлення.</p>
 
-            <form>
-                <div class="mb-3">
-                    <label for="contactName" class="form-label">Ваше ім'я</label>
-                    <input type="text" class="form-control" id="contactName" placeholder="Введіть ваше ім'я">
-                </div>
-                <div class="mb-3">
-                    <label for="contactEmail" class="form-label">Ваш Email</label>
-                    <input type="email" class="form-control" id="contactEmail" placeholder="name@example.com">
-                </div>
-                <div class="mb-3">
-                    <label for="contactMessage" class="form-label">Ваше повідомлення</label>
-                    <textarea class="form-control" id="contactMessage" rows="5" placeholder="Текст вашого повідомлення..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Надіслати (поки не працює)</button>
+            <form method="POST" action="{{ url_for('contacts_page') }}" novalidate>
+
+                {{ form.hidden_tag() }}
+
+                {{ render_field(form.name) }}
+                {{ render_field(form.email) }}
+                {{ render_field(form.phone) }}
+                {{ render_field(form.subject) }}
+                {{ render_field(form.message) }}
+
+                {{ form.submit(class="btn btn-primary") }}
             </form>
         </section>
     </div>
