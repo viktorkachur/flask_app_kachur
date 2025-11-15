@@ -3,7 +3,7 @@ from flask import (
     flash, session, make_response
 )
 from app.users import users_bp
-from app.forms import LoginForm  # Зверни увагу: тут НЕМАЄ ContactForm
+from app.forms import LoginForm  
 import datetime
 
 
