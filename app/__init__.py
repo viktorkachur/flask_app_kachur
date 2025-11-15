@@ -9,4 +9,7 @@ from app.users import users_bp
 
 application.register_blueprint(users_bp, url_prefix='/users')
 
+from app.products import products_bp
+application.register_blueprint(products_bp, url_prefix='/products')
+
 from app import views

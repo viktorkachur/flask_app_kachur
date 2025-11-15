@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог Товарів{% endblock %}
+
+{% block content %}
+<section class="resume-section">
+    <h2>Наші товари</h2>
+    <div class="list-group">
+        {% for product in products %}
+            <a href="{{ url_for('products.product_details', product_id=product.id) }}" class="list-group-item list-group-item-action">
+                <strong>{{ product.name }}</strong> - {{ product.price }} грн.
+            </a>
+        {% else %}
+            <p>Товарів не знайдено.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
