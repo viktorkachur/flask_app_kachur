@@ -1,15 +1,38 @@
 
-from flask import Flask
+from flask import Flask, render_template, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from app.config import config_by_name
+import os
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app(config_name='default'):
+
+    app = Flask(__name__, instance_relative_config=True)
 
 
-application = Flask(__name__)
+    config_name_to_use = os.getenv('FLASK_ENV', config_name)
+    app.config.from_object(config_by_name[config_name_to_use])
 
-application.config.from_object('config.AppConfig')
-from app.users import users_bp
+    db.init_app(app)
+    migrate.init_app(app, db)
 
-application.register_blueprint(users_bp, url_prefix='/users')
+    # --- Реєстрація Blueprint (поки закоментовано) ---
+    # Ми розкоментуємо це в Частині 2, коли створимо 'posts_bp'
+    # from app.posts import posts_bp
+    # app.register_blueprint(posts_bp, url_prefix='/post')
+    # --- Кінець Blueprint ---
 
-from app.products import products_bp
-application.register_blueprint(products_bp, url_prefix='/products')
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('404.html'), 404
 
-from app import views
+
+    @app.route('/')
+    def home():
+
+        return "Фабрика додатків працює! Ми ще не створили Blueprint 'posts'."
+
+    return app
