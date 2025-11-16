@@ -17,9 +17,9 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    # 3. Беремо назву файлу з .env
+
     DB_NAME = os.environ.get('DATABASE_FILE') or 'dev.sqlite'
-    # 4. ЗАВЖДИ будуємо АБСОЛЮТНИЙ шлях
+
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(Config.INSTANCE_PATH, DB_NAME)
 
 
