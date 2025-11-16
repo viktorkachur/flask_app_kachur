@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from '_render_field.html' import render_field %}
+
+{% block title %}{{ title_tag }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <section class="resume-section">
+            <h2>{{ title_tag }}</h2>
+
+            <form method="POST" novalidate>
+                {{ form.hidden_tag() }}
+
+                {{ render_field(form.title) }}
+                {{ render_field(form.content) }}
+                {{ render_field(form.publish_date) }}
+                {{ render_field(form.category) }}
+
+                <div class="mb-3 form-check">
+                    {{ form.is_active(class="form-check-input") }}
+                    {{ form.is_active.label(class="form-check-label") }}
+                </div>
+
+                {{ form.submit(class="btn btn-primary") }}
+                <a href="{{ url_for('posts.all_posts') }}" class="btn btn-secondary">
+                    Повернутись до постів
+                </a>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

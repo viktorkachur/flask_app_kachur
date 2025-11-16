@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% from '_render_field.html' import render_field %}
+
+{% block title %}Усі пости{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('posts.static', filename='css/posts.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="mb-4">
+        <a href="{{ url_for('posts.add_post') }}" class="btn btn-primary">
+            + Створити новий пост
+        </a>
+    </div>
+
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <img src="{{ url_for('posts.static', filename='img/default.jpg') }}"
+                     class="card-img-top card-img-top-custom"
+                     alt="Зображення поста">
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="card-title-link">
+                            {{ post.title }}
+                        </a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Категорія: {{ post.category.value }}
+                    </h6>
+                    <p class="card-text">
+                        {{ post.content | truncate(100) }}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Автор: {{ post.author }} |
+                            Дата: {{ post.posted.strftime('%Y-%m-%d %H:%M') }}
+                        </small>
+                    </p>
+
+                    <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="btn btn-outline-primary mt-auto">
+                        Читати далі
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col">
+            <p>Постів ще немає. Будьте першим!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
