@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, SubmitField, TextAreaField,
-    SelectField, BooleanField, DateTimeLocalField
+    SelectField, BooleanField, DateTimeLocalField,
+    SelectMultipleField
 )
 from wtforms.validators import DataRequired, Length
 from app.posts.models import PostCategory
 import datetime
-
 
 CATEGORIES = [
     (cat.name, cat.value) for cat in PostCategory
@@ -14,7 +14,6 @@ CATEGORIES = [
 
 
 class PostForm(FlaskForm):
-
     title = StringField("Заголовок", [
         DataRequired(),
         Length(min=2, message="Заголовок має бути довшим")
@@ -30,9 +29,11 @@ class PostForm(FlaskForm):
                                       format="%Y-%m-%dT%H:%M",
                                       default=datetime.datetime.now)
 
-
     category = SelectField('Категорія',
                            choices=CATEGORIES,
                            validators=[DataRequired()])
+
+    author_id = SelectField("Автор", coerce=int)
+    tags = SelectMultipleField("Теги", coerce=int)
 
     submit = SubmitField("Опублікувати")

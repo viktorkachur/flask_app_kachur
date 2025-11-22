@@ -35,7 +35,7 @@ def create_app(config_name='default'):
     db.init_app(app)
     migrate.init_app(app, db)
 
-
+    from app.models import User
     from app.posts import post_bp
     from app.posts import views
     app.register_blueprint(post_bp, url_prefix='/post')

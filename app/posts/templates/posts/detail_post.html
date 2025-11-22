@@ -5,10 +5,20 @@
 <section class="resume-section">
     <h1 class="display-5">{{ post.title }}</h1>
     <p class="text-muted">
-        Автор: <strong>{{ post.author }}</strong> |
+        Автор: <strong>{{ post.user.username }}</strong> |
         Дата: {{ post.posted.strftime('%Y-%m-%d %H:%M') }} |
         Категорія: <strong>{{ post.category.value }}</strong>
     </p>
+
+    <p>
+        <strong>Теги:</strong>
+        {% for tag in post.tags %}
+            <span class="badge bg-secondary me-1">{{ tag.name }}</span>
+        {% else %}
+            <span class="text-muted">Немає тегів</span>
+        {% endfor %}
+    </p>
+
     <hr>
     <div class="post-content mt-4 mb-4">
         <p>{{ post.content | safe }}</p>
@@ -21,7 +31,6 @@
         <a href="{{ url_for('posts.delete_post', id=post.id) }}" class="btn btn-danger">
             Видалити
         </a>
-
         <a href="{{ url_for('posts.all_posts') }}" class="btn btn-secondary">
             Назад до всіх постів
         </a>
