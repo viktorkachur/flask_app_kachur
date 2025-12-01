@@ -1,16 +1,66 @@
 {% extends "base.html" %}
+{% from "_render_field.html" import render_field %}
 
 {% block title %}Мій Акаунт{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h2 class="card-title">Welcome, {{ current_user.username }}!</h2>
-            <p class="card-text">Ви успішно увійшли у свій профіль.</p>
-            <p>Email: <strong>{{ current_user.email }}</strong></p>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <img class="rounded-circle account-img mb-3" src="{{ image_file }}" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h3 class="card-title">{{ current_user.username }}</h3>
+                    <p class="text-muted">{{ current_user.email }}</p>
 
-            <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти</a>
+                    {% if current_user.last_seen %}
+                        <p class="small text-muted">
+                            Останній візит: {{ current_user.last_seen.strftime('%Y-%m-%d %H:%M') }} UTC
+                        </p>
+                    {% endif %}
+
+                    {% if current_user.about_me %}
+                        <hr>
+                        <p><i>{{ current_user.about_me }}</i></p>
+                    {% endif %}
+
+                    <hr>
+                    <a href="{{ url_for('users.change_password') }}" class="btn btn-outline-warning w-100">
+                        Змінити пароль 🔒
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Налаштування профілю
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" enctype="multipart/form-data" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        {{ render_field(form.username) }}
+                        {{ render_field(form.email) }}
+                        {{ render_field(form.about_me) }}
+
+                        <div class="mb-3">
+                            {{ form.picture.label(class="form-label") }}
+                            {{ form.picture(class="form-control") }}
+                            {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                    <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
