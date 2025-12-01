@@ -1,5 +1,3 @@
-# /app/users/views.py
-
 import os
 import secrets
 from PIL import Image
@@ -9,21 +7,17 @@ from app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, Chan
 from app.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from . import users_bp
-from datetime import datetime  # <-- Потрібно для часу
+from datetime import datetime  
 
 
-# --- НОВА ФУНКЦІЯ (Завдання 6) ---
-# Виконується перед кожним запитом до сайту
+
 @users_bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
-        # Ми не робимо тут full commit, щоб не перевантажувати базу,
-        # але для лаби зробимо commit
         db.session.commit()
 
 
-# --------------------------------
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -89,7 +83,6 @@ def account():
 
         current_user.username = form.username.data
         current_user.email = form.email.data
-        # Зберігаємо "Про себе"
         current_user.about_me = form.about_me.data
 
         db.session.commit()
@@ -99,7 +92,6 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-        # Заповнюємо поле "Про себе"
         form.about_me.data = current_user.about_me
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -108,22 +100,20 @@ def account():
                            image_file=image_file, form=form)
 
 
-# --- НОВИЙ МАРШРУТ (Завдання 7) ---
 @users_bp.route("/account/change_password", methods=['GET', 'POST'])
 @login_required
 def change_password():
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-        # 1. Перевіряємо, чи правильний старий пароль
+
         if current_user.verify_password(form.current_password.data):
-            # 2. Хешуємо та зберігаємо новий пароль (сетер password зробить хешування)
+
             current_user.password = form.new_password.data
             db.session.commit()
 
             flash('Ваш пароль успішно змінено! Увійдіть з новим паролем.', 'success')
-            # Для безпеки можна розлогінити користувача, але це не обов'язково.
-            # Ми просто перенаправимо на профіль.
+
             return redirect(url_for('users.account'))
         else:
             flash('Невірний поточний пароль.', 'danger')
