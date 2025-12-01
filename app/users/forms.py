@@ -1,8 +1,6 @@
-# /app/users/forms.py
-
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField  # <-- Додано TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField 
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 from app.models import User
@@ -43,9 +41,8 @@ class UpdateAccountForm(FlaskForm):
     email = StringField('Email', validators=[
         DataRequired(), Email()])
 
-    # --- НОВЕ ПОЛЕ ---
+
     about_me = TextAreaField('Про себе', validators=[Length(max=140)])
-    # -----------------
 
     picture = FileField('Оновити фото профілю', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], 'Тільки зображення!')
@@ -65,7 +62,7 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('Цей email вже зареєстрований.')
 
-# --- НОВА ФОРМА (Завдання 7) ---
+
 class ChangePasswordForm(FlaskForm):
     current_password = PasswordField('Поточний пароль', validators=[DataRequired()])
     new_password = PasswordField('Новий пароль', validators=[
