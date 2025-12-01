@@ -1,11 +1,9 @@
-# /app/models.py
-
 from . import db, bcrypt, login_manager
 from flask_login import UserMixin
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, DateTime  # <-- Додано DateTime
-from typing import List, Optional  # <-- Додано Optional
-from datetime import datetime  # <-- Додано datetime
+from sqlalchemy import Integer, String, DateTime  
+from typing import List, Optional 
+from datetime import datetime  
 
 
 @login_manager.user_loader
@@ -28,10 +26,10 @@ class User(db.Model, UserMixin):
         server_default='default.jpg'
     )
 
-    # --- НОВІ ПОЛЯ (Завдання 6) ---
+
     about_me: Mapped[Optional[str]] = mapped_column(String(140))
     last_seen: Mapped[Optional[datetime]] = mapped_column(DateTime)
-    # -----------------------------
+  
 
     posts: Mapped[List["Post"]] = relationship("Post", back_populates="user", cascade="all, delete-orphan")
 
